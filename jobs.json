@@ -103,5 +103,49 @@
       "[2025-07-24 15:13:13.076441] Job failed: Command '['git', 'clone', '--branch', 'main', 'https://github.com/octocat/Hello-World.git', './workspace\\\\octocat_Hello-World']' returned non-zero exit status 128."
     ],
     "steps": []
+  },
+  "8f27a832": {
+    "repo_url": "https://github.com/octocat/Hello-World.git",
+    "commit_sha": "main",
+    "branch": "main",
+    "status": "done",
+    "created_at": "2025-07-24T09:54:05.374195",
+    "started_at": null,
+    "completed_at": "2025-07-24T09:54:06.863713",
+    "logs": [
+      "[2025-07-24 15:24:05.440850] Starting job for https://github.com/octocat/Hello-World.git@main",
+      "[2025-07-24 15:24:05.440850] Cloning repository...",
+      "[2025-07-24 15:24:06.798539] Repository cloned to c:\\Users\\pooja\\Documents\\ci_server\\workspace\\octocat_Hello-World",
+      "[2025-07-24 15:24:06.798539] Parsing pipeline...",
+      "[2025-07-24 15:24:06.798539] Pipeline 'default' loaded with 3 steps",
+      "[2025-07-24 15:24:06.798539] Running security scan...",
+      "[2025-07-24 15:24:06.799541] Security scan: 0 issues found, Risk: LOW",
+      "[2025-07-24 15:24:06.799541] Executing step 1: check_python",
+      "STDOUT: Python 3.12.2\n",
+      "[2025-07-24 15:24:06.832992] Step check_python completed successfully",
+      "[2025-07-24 15:24:06.832992] Executing step 2: list_files",
+      "STDOUT:  Volume in drive C has no label.\n Volume Serial Number is EA77-1D73\n\n Directory of c:\\Users\\pooja\\Documents\\ci_server\\workspace\\octocat_Hello-World\n\n07/24/2025  03:24 PM    <DIR>          .\n07/24/2025  03:24 PM    <DIR>          ..\n07/24/2025  03:24 PM                14 README\n               1 File(s)             14 bytes\n               2 Dir(s)  160,813,367,296 bytes free\n",
+      "[2025-07-24 15:24:06.849913] Step list_files completed successfully",
+      "[2025-07-24 15:24:06.849913] Executing step 3: test_echo",
+      "STDOUT: \"Pipeline completed successfully!\"\n",
+      "[2025-07-24 15:24:06.863713] Step test_echo completed successfully",
+      "[2025-07-24 15:24:06.863713] All steps completed successfully"
+    ],
+    "steps": []
+  },
+  "dda9dc4a": {
+    "repo_url": "https://github.com/octocat/Hello-World.git",
+    "commit_sha": "main",
+    "branch": "main",
+    "status": "failed",
+    "created_at": "2025-07-24T09:54:43.659240",
+    "started_at": "2025-07-24T09:54:45.906617",
+    "completed_at": "2025-07-24T09:54:46.972806",
+    "logs": [
+      "[2025-07-24 15:24:45.907873] Starting job for https://github.com/octocat/Hello-World.git@main",
+      "[2025-07-24 15:24:45.907873] Cloning repository...",
+      "[2025-07-24 15:24:46.959137] Job failed: Git operation failed: Command '['git', 'checkout', 'main']' returned non-zero exit status 1."
+    ],
+    "steps": []
   }
 }
