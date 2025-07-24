@@ -1,0 +1,13 @@
+{
+  "fcdc8522": {
+    "repo_url": "https://github.com/user/test-repo.git",
+    "commit_sha": "def456ghi789",
+    "branch": "main",
+    "status": "queued",
+    "created_at": "2025-07-24T08:54:17.023304",
+    "started_at": null,
+    "completed_at": null,
+    "logs": [],
+    "steps": []
+  }
+}

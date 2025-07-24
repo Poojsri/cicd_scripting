@@ -1,11 +1,11 @@
 # Custom CI/CD Pipeline Tool
 
-A minimal, educational CI/CD pipeline tool built from scratch using Python and MongoDB.
+A minimal, educational CI/CD pipeline tool built from scratch using Python with file-based persistence.
 
 ## Features
 
 - 🔗 **Webhook Listener**: Receives GitHub push events via HTTP server
-- 📋 **Job Queue**: MongoDB-based job management with status tracking
+- 📋 **Job Queue**: File-based job management with status tracking
 - 📄 **Pipeline Parser**: Reads `.cicd.yml` configuration files
 - ⚡ **Executor**: Runs pipeline steps using subprocess
 - 📊 **Dashboard**: CLI interface to view jobs and logs
@@ -14,40 +14,27 @@ A minimal, educational CI/CD pipeline tool built from scratch using Python and M
 
 ### 1. Install Dependencies
 ```bash
-pip install -r requirements.txt
+pip install pymongo pyyaml requests
 ```
 
-### 2. Start MongoDB
-Make sure MongoDB is running on `localhost:27017` (default).
-
-### 3. Run the CI/CD Server
-
-**Option A: Run both webhook listener and executor**
+### 2. Run the CI/CD Server
 ```bash
-python main.py both
+python start_server.py
 ```
 
-**Option B: Run components separately**
+### 3. Test the Webhook
 ```bash
-# Terminal 1: Start webhook listener
-python main.py webhook
-
-# Terminal 2: Start job executor
-python main.py executor
+# In another terminal
+python debug_test.py
 ```
 
-### 4. Test the Webhook
-```bash
-python tests/test_webhook.py
-```
-
-### 5. View Jobs
+### 4. View Jobs
 ```bash
 # Show recent jobs
-python dashboard.py jobs
+python simple_dashboard.py jobs
 
 # Show logs for specific job
-python dashboard.py logs <job_id>
+python simple_dashboard.py logs <job_id>
 ```
 
 ## Pipeline Configuration
@@ -80,8 +67,6 @@ steps:
 ## Environment Variables
 
 ```bash
-MONGO_URI=mongodb://localhost:27017/
-DATABASE_NAME=ci_pipeline
 WEBHOOK_PORT=8080
 GITHUB_SECRET=your_webhook_secret
 WORKSPACE_DIR=./workspace
@@ -92,7 +77,7 @@ WORKSPACE_DIR=./workspace
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │  GitHub Push    │───▶│ Webhook Listener │───▶│   Job Queue     │
-│     Event       │    │  (http.server)  │    │   (MongoDB)     │
+│     Event       │    │  (http.server)  │    │  (jobs.json)    │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
                                                         │
                                                         ▼
@@ -102,9 +87,47 @@ WORKSPACE_DIR=./workspace
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
+## Testing Commands
+
+```bash
+# Start server
+python start_server.py
+
+# Test webhook (in another terminal)
+python debug_test.py
+
+# Create job directly
+python direct_test.py
+
+# View jobs
+python simple_dashboard.py jobs
+
+# View specific job logs
+python simple_dashboard.py logs <job_id>
+```
+
 ## Job Statuses
 
 - `queued`: Job waiting to be processed
 - `running`: Job currently executing
 - `done`: Job completed successfully
 - `failed`: Job failed during execution
+
+## Files Created
+
+- `jobs.json`: Persistent job storage
+- `workspace/`: Temporary repository clones
+
+## GitHub Webhook Setup (Optional)
+
+1. Expose local server using ngrok: `ngrok http 8080`
+2. Go to GitHub repo → Settings → Webhooks
+3. Add webhook: `http://your-ngrok-url.ngrok.io/webhook`
+4. Set content type: `application/json`
+5. Select "Push events"
+
+## Troubleshooting
+
+- **No jobs found**: Use `python simple_dashboard.py jobs` instead of `python dashboard.py jobs`
+- **Webhook not working**: Check server console for debug output
+- **Jobs not persisting**: Check if `jobs.json` file is created

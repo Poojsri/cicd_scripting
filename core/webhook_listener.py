@@ -9,8 +9,16 @@ from core.job_queue import JobQueue
 from models.job import Job
 
 class WebhookHandler(BaseHTTPRequestHandler):
-    def __init__(self, *args, job_queue: JobQueue = None, **kwargs):
-        self.job_queue = job_queue or JobQueue()
+    def __init__(self, *args, job_queue = None, **kwargs):
+        if job_queue is None:
+            try:
+                from shared_queue import job_queue as shared_queue
+                self.job_queue = shared_queue
+            except ImportError:
+                from core.job_queue import JobQueue
+                self.job_queue = JobQueue()
+        else:
+            self.job_queue = job_queue
         super().__init__(*args, **kwargs)
     
     def do_POST(self):
@@ -30,10 +38,15 @@ class WebhookHandler(BaseHTTPRequestHandler):
         
         try:
             payload = json.loads(body.decode('utf-8'))
+            print(f"DEBUG: Received payload: {payload}")
+            
             if self._is_push_event(payload):
+                print("DEBUG: Is push event - creating job")
                 job = self._create_job_from_payload(payload)
                 job_id = self.job_queue.add_job(job)
                 print(f"Job {job_id} queued for {job.repo_url}@{job.commit_sha}")
+            else:
+                print("DEBUG: Not a push event, ignoring")
             
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
@@ -68,8 +81,16 @@ class WebhookHandler(BaseHTTPRequestHandler):
         return Job(repo_url, commit_sha, branch)
 
 class WebhookListener:
-    def __init__(self, job_queue: JobQueue = None):
-        self.job_queue = job_queue or JobQueue()
+    def __init__(self, job_queue = None):
+        if job_queue is None:
+            try:
+                from shared_queue import job_queue as shared_queue
+                self.job_queue = shared_queue
+            except ImportError:
+                from core.job_queue import JobQueue
+                self.job_queue = JobQueue()
+        else:
+            self.job_queue = job_queue
     
     def start(self):
         def handler(*args, **kwargs):

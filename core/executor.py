@@ -4,7 +4,10 @@ import shutil
 from datetime import datetime
 from typing import List, Dict
 
-from core.job_queue import JobQueue
+try:
+    from core.job_queue import JobQueue
+except ImportError:
+    from core.memory_queue import MemoryJobQueue as JobQueue
 from core.pipeline_parser import PipelineParser
 from models.job import Job, JobStatus
 

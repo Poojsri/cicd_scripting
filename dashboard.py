@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import sys
 from datetime import datetime
-from core.job_queue import JobQueue
+# Remove this import block
 
 class Dashboard:
     def __init__(self):
-        self.job_queue = JobQueue()
+        from shared_queue import job_queue
+        self.job_queue = job_queue
     
     def show_jobs(self, limit=10):
         """Display recent jobs"""

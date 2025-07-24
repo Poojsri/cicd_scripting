@@ -1,0 +1,13 @@
+name: "Test CI Pipeline"
+steps:
+  - name: "check_python"
+    run: "python --version"
+  
+  - name: "list_files"
+    run: "dir"
+  
+  - name: "create_test_file"
+    run: "echo Hello CI/CD > test_output.txt"
+  
+  - name: "verify_file"
+    run: "type test_output.txt"
