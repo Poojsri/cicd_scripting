@@ -6,6 +6,7 @@ from typing import List, Dict
 
 # Import removed - using shared_queue
 from core.pipeline_parser import PipelineParser
+from core.security_scanner import SecurityScanner
 from models.job import Job, JobStatus
 
 class PipelineExecutor:
@@ -16,6 +17,7 @@ class PipelineExecutor:
         else:
             self.job_queue = job_queue
         self.parser = PipelineParser()
+        self.security_scanner = SecurityScanner()
     
     def execute_job(self, job_id: str, job: Job) -> bool:
         """Execute a single job"""
@@ -38,6 +40,20 @@ class PipelineExecutor:
                 raise Exception("Invalid pipeline configuration")
             
             logs.append(f"[{datetime.now()}] Pipeline '{pipeline['name']}' loaded with {len(pipeline['steps'])} steps")
+            
+            # Security scan
+            logs.append(f"[{datetime.now()}] Running security scan...")
+            security_result = self.security_scanner.scan_repository(repo_path)
+            logs.append(f"[{datetime.now()}] Security scan: {security_result['total_issues']} issues found, Risk: {security_result['risk_level']}")
+            
+            # Block execution if critical security issues found
+            if security_result['risk_level'] == 'CRITICAL':
+                logs.append(f"[{datetime.now()}] CRITICAL security issues found - blocking execution")
+                for issue in security_result['issues']:
+                    if issue['severity'] == 'CRITICAL':
+                        logs.append(f"  - {issue['description']} in {issue['file']}")
+                self.job_queue.update_job_status(job_id, JobStatus.FAILED, logs)
+                return False
             
             # Execute steps
             for i, step in enumerate(pipeline['steps']):
