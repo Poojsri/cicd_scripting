@@ -1,0 +1,16 @@
+name: "Python CI Pipeline"
+steps:
+  - name: "setup"
+    run: "python --version"
+  
+  - name: "install_dependencies"
+    run: "pip install -r requirements.txt"
+  
+  - name: "lint"
+    run: "python -m flake8 --max-line-length=88 ."
+  
+  - name: "test"
+    run: "python -m pytest tests/ -v"
+  
+  - name: "build"
+    run: "python setup.py sdist bdist_wheel"

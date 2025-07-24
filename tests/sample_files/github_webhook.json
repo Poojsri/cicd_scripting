@@ -1,0 +1,29 @@
+{
+  "ref": "refs/heads/main",
+  "before": "abc123def456",
+  "after": "def456ghi789",
+  "repository": {
+    "id": 123456789,
+    "name": "test-repo",
+    "full_name": "user/test-repo",
+    "clone_url": "https://github.com/user/test-repo.git",
+    "html_url": "https://github.com/user/test-repo"
+  },
+  "commits": [
+    {
+      "id": "def456ghi789",
+      "message": "Add new feature",
+      "author": {
+        "name": "Developer",
+        "email": "dev@example.com"
+      },
+      "added": ["new_file.py"],
+      "modified": ["existing_file.py"],
+      "removed": []
+    }
+  ],
+  "head_commit": {
+    "id": "def456ghi789",
+    "message": "Add new feature"
+  }
+}
