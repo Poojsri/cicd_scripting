@@ -6,10 +6,10 @@ from models.job import Job
 def test_direct_job_creation():
     print("Testing direct job creation...")
     
-    # Create a job directly
+    # Create a job directly with real repo
     job = Job(
-        repo_url="https://github.com/user/test-repo.git",
-        commit_sha="def456ghi789",
+        repo_url="https://github.com/octocat/Hello-World.git",
+        commit_sha="main",
         branch="main"
     )
     

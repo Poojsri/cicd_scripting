@@ -4,8 +4,15 @@ import json
 
 def debug_webhook():
     # Use the sample webhook data
-    with open('tests/sample_files/github_webhook.json', 'r') as f:
-        payload = json.load(f)
+    # Use real repository payload
+    payload = {
+        "ref": "refs/heads/main",
+        "after": "main",
+        "repository": {
+            "clone_url": "https://github.com/octocat/Hello-World.git"
+        },
+        "commits": [{"message": "Test CI pipeline"}]
+    }
     
     print("Sending webhook...")
     print(f"Payload: {json.dumps(payload, indent=2)}")

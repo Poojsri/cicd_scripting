@@ -106,6 +106,30 @@ python simple_dashboard.py jobs
 python simple_dashboard.py logs <job_id>
 ```
 
+## Project Structure
+
+```
+ci_server/
+├── core/
+│   ├── executor.py           # Pipeline execution engine
+│   ├── file_queue.py         # File-based job queue
+│   ├── pipeline_parser.py    # .cicd.yml parser & git operations
+│   └── webhook_listener.py   # HTTP webhook server
+├── models/
+│   └── job.py               # Job data model
+├── config/
+│   └── settings.py          # Configuration settings
+├── tests/
+│   └── sample_files/        # Test data
+├── start_server.py          # Main server entry point
+├── simple_dashboard.py      # CLI dashboard
+├── shared_queue.py          # Shared job queue instance
+├── debug_test.py           # Webhook testing
+├── direct_test.py          # Direct job creation test
+├── jobs.json               # Persistent job storage (auto-created)
+└── workspace/              # Git repositories (auto-created)
+```
+
 ## Job Statuses
 
 - `queued`: Job waiting to be processed
@@ -118,16 +142,35 @@ python simple_dashboard.py logs <job_id>
 - `jobs.json`: Persistent job storage
 - `workspace/`: Temporary repository clones
 
-## GitHub Webhook Setup (Optional)
 
-1. Expose local server using ngrok: `ngrok http 8080`
-2. Go to GitHub repo → Settings → Webhooks
-3. Add webhook: `http://your-ngrok-url.ngrok.io/webhook`
-4. Set content type: `application/json`
-5. Select "Push events"
+
+## How It Works
+
+### 1. **Webhook Flow**
+```
+GitHub Push → POST /webhook → Create Job → Save to jobs.json
+```
+
+### 2. **Execution Flow**
+```
+Executor polls jobs.json → Find queued job → git pull/clone → 
+Read .cicd.yml → Run steps → Update status → Save logs
+```
+
+### 3. **Job States**
+- `queued` → `running` → `done` or `failed`
 
 ## Troubleshooting
 
-- **No jobs found**: Use `python simple_dashboard.py jobs` instead of `python dashboard.py jobs`
+- **Repository not found**: Update test files to use real GitHub repos
+- **No jobs found**: Jobs persist in `jobs.json` - check if file exists
 - **Webhook not working**: Check server console for debug output
-- **Jobs not persisting**: Check if `jobs.json` file is created
+- **Git errors**: Ensure git is installed and accessible from command line
+
+## Real GitHub Integration
+
+1. **Expose server**: `ngrok http 8080`
+2. **Add webhook**: GitHub repo → Settings → Webhooks → Add webhook
+3. **URL**: `https://your-ngrok-url.ngrok.io/webhook`
+4. **Content-type**: `application/json`
+5. **Events**: Just push events

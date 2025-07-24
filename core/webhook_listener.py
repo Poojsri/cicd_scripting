@@ -5,7 +5,6 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 
 from config.settings import WEBHOOK_PORT, WEBHOOK_PATH, GITHUB_SECRET
-from core.job_queue import JobQueue
 from models.job import Job
 
 class WebhookHandler(BaseHTTPRequestHandler):

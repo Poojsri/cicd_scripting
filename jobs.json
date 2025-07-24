@@ -3,11 +3,60 @@
     "repo_url": "https://github.com/user/test-repo.git",
     "commit_sha": "def456ghi789",
     "branch": "main",
-    "status": "queued",
+    "status": "failed",
     "created_at": "2025-07-24T08:54:17.023304",
-    "started_at": null,
-    "completed_at": null,
-    "logs": [],
+    "started_at": "2025-07-24T09:05:59.578126",
+    "completed_at": "2025-07-24T09:06:01.059440",
+    "logs": [
+      "[2025-07-24 14:35:59.579137] Starting job for https://github.com/user/test-repo.git@def456ghi789",
+      "[2025-07-24 14:35:59.579137] Cloning repository...",
+      "[2025-07-24 14:36:01.047995] Job failed: Command '['git', 'clone', '--branch', 'main', 'https://github.com/user/test-repo.git', './workspace\\\\user_test-repo']' returned non-zero exit status 128."
+    ],
+    "steps": []
+  },
+  "b145d9ba": {
+    "repo_url": "https://github.com/user/test-repo.git",
+    "commit_sha": "def456ghi789",
+    "branch": "main",
+    "status": "failed",
+    "created_at": "2025-07-24T09:07:29.351216",
+    "started_at": "2025-07-24T09:07:31.088676",
+    "completed_at": "2025-07-24T09:07:32.424928",
+    "logs": [
+      "[2025-07-24 14:37:31.090721] Starting job for https://github.com/user/test-repo.git@def456ghi789",
+      "[2025-07-24 14:37:31.090721] Cloning repository...",
+      "[2025-07-24 14:37:32.407815] Job failed: Command '['git', 'clone', '--branch', 'main', 'https://github.com/user/test-repo.git', './workspace\\\\user_test-repo']' returned non-zero exit status 128."
+    ],
+    "steps": []
+  },
+  "49752783": {
+    "repo_url": "https://github.com/octocat/Hello-World.git",
+    "commit_sha": "main",
+    "branch": "main",
+    "status": "failed",
+    "created_at": "2025-07-24T09:08:41.482066",
+    "started_at": "2025-07-24T09:08:41.594665",
+    "completed_at": "2025-07-24T09:08:42.956767",
+    "logs": [
+      "[2025-07-24 14:38:41.594665] Starting job for https://github.com/octocat/Hello-World.git@main",
+      "[2025-07-24 14:38:41.594665] Cloning repository...",
+      "[2025-07-24 14:38:42.926175] Job failed: Command '['git', 'clone', '--branch', 'main', 'https://github.com/octocat/Hello-World.git', './workspace\\\\octocat_Hello-World']' returned non-zero exit status 128."
+    ],
+    "steps": []
+  },
+  "1b428ada": {
+    "repo_url": "https://github.com/octocat/Hello-World.git",
+    "commit_sha": "main",
+    "branch": "main",
+    "status": "failed",
+    "created_at": "2025-07-24T09:09:21.816724",
+    "started_at": "2025-07-24T09:09:22.986308",
+    "completed_at": "2025-07-24T09:09:24.134451",
+    "logs": [
+      "[2025-07-24 14:39:22.988321] Starting job for https://github.com/octocat/Hello-World.git@main",
+      "[2025-07-24 14:39:22.988321] Cloning repository...",
+      "[2025-07-24 14:39:24.117977] Job failed: Command '['git', 'clone', '--branch', 'main', 'https://github.com/octocat/Hello-World.git', './workspace\\\\octocat_Hello-World']' returned non-zero exit status 128."
+    ],
     "steps": []
   }
 }

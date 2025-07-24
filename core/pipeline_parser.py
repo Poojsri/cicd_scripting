@@ -12,21 +12,24 @@ class PipelineParser:
         os.makedirs(self.workspace_dir, exist_ok=True)
     
     def clone_repo(self, repo_url: str, commit_sha: str, branch: str) -> str:
-        """Clone repository and return local path"""
+        """Clone or pull repository and return local path"""
         repo_name = self._get_repo_name(repo_url)
-        local_path = os.path.join(self.workspace_dir, f"{repo_name}_{commit_sha[:8]}")
+        local_path = os.path.join(self.workspace_dir, repo_name)
         
         if os.path.exists(local_path):
-            subprocess.run(['rmdir', '/s', '/q', local_path], shell=True, check=False)
+            # Repository exists, just pull latest
+            subprocess.run(['git', 'fetch', 'origin'], cwd=local_path, check=True)
+            subprocess.run(['git', 'checkout', branch], cwd=local_path, check=True)
+            subprocess.run(['git', 'pull', 'origin', branch], cwd=local_path, check=True)
+        else:
+            # Clone repository
+            subprocess.run([
+                'git', 'clone', '--branch', branch, repo_url, local_path
+            ], check=True)
         
-        # Clone repository
-        subprocess.run([
-            'git', 'clone', '--depth', '1', '--branch', branch, 
-            repo_url, local_path
-        ], check=True)
-        
-        # Checkout specific commit
-        subprocess.run(['git', 'checkout', commit_sha], cwd=local_path, check=True)
+        # Checkout specific commit if provided
+        if commit_sha != branch:
+            subprocess.run(['git', 'checkout', commit_sha], cwd=local_path, check=True)
         
         return local_path
     

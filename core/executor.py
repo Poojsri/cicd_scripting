@@ -4,16 +4,17 @@ import shutil
 from datetime import datetime
 from typing import List, Dict
 
-try:
-    from core.job_queue import JobQueue
-except ImportError:
-    from core.memory_queue import MemoryJobQueue as JobQueue
+# Import removed - using shared_queue
 from core.pipeline_parser import PipelineParser
 from models.job import Job, JobStatus
 
 class PipelineExecutor:
-    def __init__(self, job_queue: JobQueue = None):
-        self.job_queue = job_queue or JobQueue()
+    def __init__(self, job_queue = None):
+        if job_queue is None:
+            from shared_queue import job_queue as shared_queue
+            self.job_queue = shared_queue
+        else:
+            self.job_queue = job_queue
         self.parser = PipelineParser()
     
     def execute_job(self, job_id: str, job: Job) -> bool:
@@ -73,13 +74,9 @@ class PipelineExecutor:
             return False
         
         finally:
-            # Cleanup
-            if repo_path and os.path.exists(repo_path):
-                try:
-                    shutil.rmtree(repo_path)
-                    logs.append(f"[{datetime.now()}] Cleaned up workspace")
-                except Exception as e:
-                    logs.append(f"[{datetime.now()}] Cleanup failed: {str(e)}")
+            # Keep workspace for next run (faster git pull)
+            if repo_path:
+                logs.append(f"[{datetime.now()}] Workspace preserved for future runs")
     
     def run_worker(self):
         """Main worker loop to process jobs"""
