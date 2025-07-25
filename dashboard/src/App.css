@@ -2,34 +2,216 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
 .App {
   text-align: left;
 }
 
-/* Custom scrollbar for log viewer */
-.log-viewer::-webkit-scrollbar {
+/* Updated color palette */
+:root {
+  --teal-light: #78B9B5;
+  --teal-dark: #0F828C;
+  --blue-dark: #065084;
+  --purple-dark: #320A6B;
+  --purple-darker: #2A004E;
+  --purple-darkest: #500073;
+}
+
+/* Improved glassmorphism effect with better opacity */
+.glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(120, 185, 181, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-dark {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(6, 80, 132, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Simplified gradient background */
+.gradient-bg {
+  background: linear-gradient(135deg, #2A004E 0%, #320A6B 25%, #065084 75%, #0F828C 100%);
+  position: relative;
+}
+
+.gradient-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, #0F828C 0%, #78B9B5 100%);
+}
+
+.gradient-error {
+  background: linear-gradient(135deg, #500073 0%, #320A6B 100%);
+}
+
+.gradient-warning {
+  background: linear-gradient(135deg, #320A6B 0%, #065084 100%);
+}
+
+.gradient-info {
+  background: linear-gradient(135deg, #065084 0%, #0F828C 100%);
+}
+
+/* Enhanced scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0F828C 0%, #78B9B5 100%);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #78B9B5 0%, #0F828C 100%);
+}
+
+/* Terminal scrollbar */
+.terminal-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
 
-.log-viewer::-webkit-scrollbar-track {
-  background: #1f2937;
+.terminal-scrollbar::-webkit-scrollbar-track {
+  background: #1a1a2e;
 }
 
-.log-viewer::-webkit-scrollbar-thumb {
-  background: #4b5563;
+.terminal-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0F828C 0%, #78B9B5 100%);
   border-radius: 4px;
 }
 
-.log-viewer::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
-/* Animation for live indicators */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(120, 185, 181, 0.4); }
+  50% { box-shadow: 0 0 30px rgba(120, 185, 181, 0.7); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.glow-animation {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(120, 185, 181, 0.4), transparent);
+  background-size: 200px 100%;
+  animation: shimmer 2s infinite;
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid #78B9B5;
+  white-space: nowrap;
+  animation: typewriter 2s steps(40, end), blink 1s step-end infinite;
+}
+
+/* Improved status indicators with better contrast */
+.status-pending {
+  background: linear-gradient(135deg, #320A6B 0%, #065084 100%);
+  box-shadow: 0 4px 15px rgba(50, 10, 107, 0.4);
+}
+
+.status-running {
+  background: linear-gradient(135deg, #065084 0%, #0F828C 100%);
+  box-shadow: 0 4px 15px rgba(6, 80, 132, 0.4);
+  animation: glow 2s ease-in-out infinite;
+}
+
+.status-success {
+  background: linear-gradient(135deg, #0F828C 0%, #78B9B5 100%);
+  box-shadow: 0 4px 15px rgba(15, 130, 140, 0.4);
+}
+
+.status-failed {
+  background: linear-gradient(135deg, #500073 0%, #320A6B 100%);
+  box-shadow: 0 4px 15px rgba(80, 0, 115, 0.4);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Improved neon text effect */
+.neon-text {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(120, 185, 181, 0.6), 0 0 30px rgba(120, 185, 181, 0.4);
+  color: white !important;
+}
+
+/* Progress bar */
+.progress-bar {
+  background: linear-gradient(90deg, #0F828C, #78B9B5, #0F828C);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* High contrast text classes */
+.text-high-contrast {
+  color: #1a1a2e !important;
+  font-weight: 600;
+}
+
+.text-medium-contrast {
+  color: #2A004E !important;
+  font-weight: 500;
+}
+
+.text-icon-contrast {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Better background for content areas */
+.content-bg {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
 }
